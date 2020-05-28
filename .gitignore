@@ -127,8 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+<<<<<<< HEAD
 
 #sql
 *.sql
 *.dump
 *.sh
+=======
+>>>>>>> 108c030ebb390c37af989ee3c1320a1377d6d30d
