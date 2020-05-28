@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+#mysql db    
+  db:
+    build:
+      context: ./db
+      network: OPA_test
+    image: db:mysql
+#flask server    
+  api:
+    build:
+      context: ./api
+      network: OPA_test
+    image: api:python4
+    stdin_open: true
+    tty: true
+#slim alpine image for curling api
+  tester:
+    build:
+      context: ./tester
+      network: OPA_test
+    image: tester:alpine
+    stdin_open: true
+    tty: true
+    
