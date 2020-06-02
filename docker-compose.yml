@@ -1,26 +1,50 @@
 version: "3.8"
 
 services:
-#mysql db    
+  #mysql db
   db:
     build:
       context: ./db
-      network: OPA_test
     image: db:mysql
-#flask server    
+    volumes:
+      - data-volume:/docker-entrypoint-initdb.d
+    networks:
+      - OPA_test
+      #port mapping host:container - ONLY FOR DEVELOPMENT
+    ports:
+      - 3306:3306
+      - 33060:33060
+    restart: on-failure
+
+  #flask server
   api:
     build:
       context: ./api
-      network: OPA_test
     image: api:python4
+    volumes:
+      - app-volume:/app
+    networks:
+      - OPA_test
+    ports:
+      - 5000:5000
     stdin_open: true
     tty: true
-#slim alpine image for curling api
+
+  #slim alpine image for curling api
   tester:
     build:
       context: ./tester
-      network: OPA_test
     image: tester:alpine
+    networks:
+      - OPA_test
     stdin_open: true
     tty: true
-    
+
+#networks to create
+networks:
+  OPA_test:
+
+#volumes to build
+volumes:
+  data-volume:
+  app-volume:
